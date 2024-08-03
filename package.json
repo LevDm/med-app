@@ -1,0 +1,25 @@
+{
+  "name": "med-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev:frontend": "pnpm --filter frontend dev",
+    "start:dev:backend": "pnpm --filter backend start:dev",
+    "start:db-ui": "pnpm --filter backend start:db-ui",
+    "typecheck": "pnpm -r typecheck",
+    "typecheck:ci": "pnpm --filter backend generate && pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "format": "pnpm prettier --write **/*.{js,ts,css,scss,md}",
+    "format:ci": "pnpm prettier --check **/*.{js,ts,css,scss,md}",
+    "build": "pnpm -r build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "lefthook": "^1.5.2",
+    "prettier": "^3.0.3"
+  }
+}

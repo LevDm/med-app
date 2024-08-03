@@ -1,0 +1,36 @@
+image: node:latest
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+default:
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest --activate
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install --frozen-lockfile
+
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - pnpm build
+
+format:
+  stage: test
+  script:
+    - pnpm format:ci
+
+lint:
+  stage: test
+  script:
+    - pnpm lint
+
+typecheck:
+  stage: test
+  script:
+    - pnpm typecheck:ci

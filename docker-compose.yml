@@ -1,0 +1,25 @@
+version: '3.5'
+
+volumes:
+  postgresdata:
+  esdata:
+
+services:
+  postgres:
+    image: postgres
+    env_file: './packages/backend/.env'
+    volumes:
+       - postgresdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    env_file: './packages/backend/.env'
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data

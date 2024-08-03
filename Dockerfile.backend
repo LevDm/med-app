@@ -1,0 +1,13 @@
+FROM node:20-alpine as base
+RUN corepack enable
+
+FROM base AS build
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter backend build
+RUN rm -r ./packages/frontend
+
+FROM build AS backend
+CMD pnpm --filter backend migrate:deploy && pnpm --filter backend seed && pnpm --filter backend start
+EXPOSE 3000

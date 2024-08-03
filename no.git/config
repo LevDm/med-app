@@ -1,0 +1,83 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+[remote "origin"]
+	url = https://gitlab.com/urfu4/med-app.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+	vscode-merge-base = origin/main
+[branch "MEDAPP-39"]
+	remote = origin
+	merge = refs/heads/MEDAPP-39
+[branch "MEDAPP-42"]
+	remote = origin
+	merge = refs/heads/MEDAPP-42
+[branch "MEDAPP-43"]
+	remote = origin
+	merge = refs/heads/MEDAPP-43
+[branch "MEDAPP-40"]
+	remote = origin
+	merge = refs/heads/MEDAPP-40
+[branch "MEDAPP-44"]
+	remote = origin
+	merge = refs/heads/MEDAPP-44
+[branch "MEDAPP-45"]
+	remote = origin
+	merge = refs/heads/MEDAPP-45
+[branch "MEDAPP-41"]
+	remote = origin
+	merge = refs/heads/MEDAPP-41
+[branch "fix_migrations"]
+	remote = origin
+	merge = refs/heads/fix_migrations
+[branch "MEDAPP-46"]
+	remote = origin
+	merge = refs/heads/MEDAPP-46
+[branch "MEDAPP-48"]
+	remote = origin
+	merge = refs/heads/MEDAPP-48
+[branch "MEDAPP-51"]
+	remote = origin
+	merge = refs/heads/MEDAPP-51
+[branch "MEDAPP-52"]
+	remote = origin
+	merge = refs/heads/MEDAPP-52
+[branch "MEDAPP-50"]
+	remote = origin
+	merge = refs/heads/MEDAPP-50
+[branch "MEDAPP-49"]
+	remote = origin
+	merge = refs/heads/MEDAPP-49
+[branch "MEDAPP-57"]
+	remote = origin
+	merge = refs/heads/MEDAPP-57
+[branch "MEDAPP-61"]
+	remote = origin
+	merge = refs/heads/MEDAPP-61
+[branch "MEDAPP-53"]
+	remote = origin
+	merge = refs/heads/MEDAPP-53
+[branch "MEDAPP-47"]
+	remote = origin
+	merge = refs/heads/MEDAPP-47
+[branch "MEDAPP-22"]
+	remote = origin
+	merge = refs/heads/MEDAPP-22
+[branch "fix_evn"]
+	remote = origin
+	merge = refs/heads/fix_evn
+[branch "MEDAPP-70"]
+	remote = origin
+	merge = refs/heads/MEDAPP-70
+[branch "mobile-apadtive"]
+	remote = origin
+	merge = refs/heads/mobile-apadtive
+[branch "MEDAPP-78"]
+	vscode-merge-base = main
+	remote = origin
+	merge = refs/heads/MEDAPP-78

@@ -1,0 +1,7 @@
+diff --git a/packages/frontend/src/pages/shared/parameters-plots/parameters-plots.tsx b/packages/frontend/src/pages/shared/parameters-plots/parameters-plots.tsx
+index 33eefff..57bfe33 100644
+--- a/packages/frontend/src/pages/shared/parameters-plots/parameters-plots.tsx
++++ b/packages/frontend/src/pages/shared/parameters-plots/parameters-plots.tsx
+@@ -148 +148 @@ export const ParametersPlots = ({ parameters }: ParametersPlotsProps) => {
+-            if (!filteredParameters.length && false)
++            if (!filteredParameters.length)

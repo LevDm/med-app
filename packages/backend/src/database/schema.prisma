@@ -1,0 +1,143 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+
+  email String @unique
+
+  password String
+
+  firstName String
+
+  lastName String
+
+  age Int
+
+  deactivated Boolean @default(false)
+
+  role Role
+
+  gender Gender
+
+  Token            Token?
+  MedicalParameter MedicalParameter[]
+
+  UserToDoctorMapUser    UserToDoctorMap[]      @relation(name: "UserMap")
+  UserToDoctorMapDoctor  UserToDoctorMap[]      @relation(name: "DoctorMap")
+  ExportDateToUserMap    ExportDateToUserMap[]
+  YandexDiskIntergartion YandexDiskIntegration?
+  NotesUser              Notes[]                @relation(name: "UserNote")
+  NotesDoctor            Notes[]                @relation(name: "DoctorNote")
+  MessageFromUser        Message[]              @relation(name: "FromUser")
+  MessageToUser          Message[]              @relation(name: "ToUser")
+}
+
+enum Role {
+  user
+  doctor
+  admin
+}
+
+enum Gender {
+  male
+  female
+}
+
+enum InputType {
+  appleWatch
+  manual
+}
+
+model MedicalParameter {
+  id        String               @id @default(uuid())
+  createdAt DateTime             @default(now())
+  type      MedicalParameterType
+  data      Json
+  userId    String
+  user      User                 @relation(fields: [userId], references: [id])
+  inputType InputType            @default(manual)
+}
+
+enum MedicalParameterType {
+  pulse
+  steps
+  sleep
+  saturation
+  respiration
+  pressure
+  mass
+  temperature
+  workout
+  form
+}
+
+model UserToDoctorMap {
+  id       String @id @default(uuid())
+  userId   String
+  doctorId String
+  user     User   @relation(name: "UserMap", fields: [userId], references: [id])
+  doctor   User   @relation(name: "DoctorMap", fields: [doctorId], references: [id])
+}
+
+model Token {
+  id Int @id @default(autoincrement())
+
+  token String @unique
+
+  user User @relation(fields: [userId], references: [id])
+
+  userId String @unique
+}
+
+model Invite {
+  id String @id @default(uuid())
+
+  active Boolean @default(true)
+
+  expiredAt DateTime
+}
+
+model ExportDateToUserMap {
+  id     String   @id @default(uuid())
+  userId String   @unique
+  date   DateTime
+  User   User     @relation(fields: [userId], references: [id])
+}
+
+model YandexDiskIntegration {
+  id        String    @id @default(uuid())
+  userId    String    @unique
+  shareLink String
+  syncDate  DateTime?
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model Notes {
+  id        String   @id @default(uuid())
+  doctorId  String
+  userId    String
+  title     String
+  text      String
+  createdAt DateTime @default(now())
+  user      User     @relation(name: "UserNote", fields: [userId], references: [id])
+  doctor    User     @relation(name: "DoctorNote", fields: [doctorId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  from      String
+  to        String
+  text      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  fromUser  User     @relation(name: "FromUser", fields: [from], references: [id])
+  toUser    User     @relation(name: "ToUser", fields: [to], references: [id])
+}

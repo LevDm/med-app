@@ -1,0 +1,88 @@
+version: '3.5'
+
+volumes:
+  postgres_prod_data:
+  es_prod_data:
+  
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_HOST=5432
+      - BCRYPT_SALT=$BCRYPT_SALT
+      - JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
+      - JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
+      - JWT_ACCESS_EXPIRE_TIME=$JWT_ACCESS_EXPIRE_TIME
+      - JWT_REFRESH_EXPIRE_TIME=$JWT_REFRESH_EXPIRE_TIME
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    networks:
+      - database
+
+  elasticsearch:
+    container_name: elastic
+    image: elasticsearch:8.11.0
+    networks:
+      - elastic
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+    ports:
+      - 9200:9200
+    volumes:
+      - es_prod_data:/usr/share/elasticsearch/data
+
+  backend:
+    container_name: backend
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_PORT=5432
+      - DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@postgres:5432/$POSTGRES_DB
+      - BCRYPT_SALT=$BCRYPT_SALT
+      - JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
+      - JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
+      - JWT_ACCESS_EXPIRE_TIME=$JWT_ACCESS_EXPIRE_TIME
+      - JWT_REFRESH_EXPIRE_TIME=$JWT_REFRESH_EXPIRE_TIME
+      - ELASTIC_HOST=elastic
+      - ELASTIC_PORT=9200
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+    networks:
+      - database
+      - elastic
+      - webapp
+    depends_on:
+      - postgres
+      - elasticsearch
+
+  frontend:
+    container_name: frontend
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    networks:
+      - webapp
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+
+networks:
+  webapp:
+    driver: bridge
+  database:
+    driver: bridge
+  elastic:
+    driver: bridge
